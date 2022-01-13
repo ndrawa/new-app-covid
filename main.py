@@ -40,8 +40,7 @@ def plot_function(tickers):
     TOOLTIPS = HoverTool(tooltips=[    ('year', '$@{year}'),
                    ('country', '$@{country}'),
                 #    ('Total Volume', '$@{TotalVolume}'),
-                   ('Life Expectancy', '$@{life expectancy}')],
-                         formatters={'$x': 'datetime'})
+                   ('Life Expectancy', '$@{life expectancy}')])
 
     # Create the figure to store all the plot lines in:
     p = figure(x_axis_type='datetime', width=1000, height=500)
@@ -73,16 +72,6 @@ def filter_function():
 def change_function(attr, old, new):
     filter_function()
 
-def dropdown():
-    from bokeh.io import show
-    from bokeh.models import CustomJS, Dropdown
-
-    menu = [("Developed", "developed"), ("Developing", "developing")]
-
-    dropdown = Dropdown(label="Dropdown button", button_type="warning", menu=menu)
-    dropdown.js_on_event("menu_item_click", CustomJS(code="console.log('dropdown: ' + this.item, this.toString())"))
-
-    show(dropdown)
 
 def tabs(data):
     x = data[data['country']=='Afghanistan']['year']
