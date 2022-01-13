@@ -20,32 +20,28 @@ type_select= Select(title="country", value=country[0], options=country)
 df = data[data['country']==type_select.value]
 source = ColumnDataSource(data=df)
 
-# TABLE
-# Creating the list of columns:
 columns = [
         TableColumn(field="country", title="Country")
     ]
-# Initializing the table:
+
 table = DataTable(source=source, columns=columns, height=500)
 
-# PLOT
+
 def plot_function(tickers):
-    # Getting some colors:
+
     colors = list(Category20.values())[12]
     random_colors = []
     for c in range(len(tickers)):
         random_colors.append(random.choice(colors))
 
-    # Create the hovertool:
-    TOOLTIPS = HoverTool(tooltips=[    ('Year', '$@{year}'),
-                   ('Life Expectancy', '$@{life expectancy}'),
-                   ('Country', '$@{country}')
-                   ])
+    TOOLTIPS = HoverTool(tooltips=[
+                    ('Year', '$@{year}'),
+                    ('Life Expectancy', '$@{life expectancy}'),
+                    ('Country', '$@{country}')
+                    ])
 
-    # Create the figure to store all the plot lines in:
-    p = figure(x_axis_type='datetime', width=1000, height=500)
+    p = figure(width=1000, height=500)
 
-    # Loop through the tickers and colors and create plot line for each:
     for t, rc in zip(tickers, random_colors):
         view = CDSView(source=source, filters=[GroupFilter(column_name='country', group=t)])
         p.line(x='year', y='life expectancy', source=source, view=view, line_color=rc, line_width=4)
@@ -68,8 +64,8 @@ def filter_function():
     # Replace the data in the current data source with the new data:
     source.data = new_src.to_dict('series')
 
-def change_function(attr, old, new):
-    filter_function()
+# def change_function(attr, old, new):
+#     filter_function()
 
 
 def tabs(data):
@@ -86,7 +82,7 @@ def tabs(data):
 
     return Tabs(tabs=[tab1, tab2])
 
-type_select.on_change('value', change_function)
+type_select.on_change('value', filter_function)
 
 # Header
 title = Div(text='<h1 style="text-align: center">Bla blae</h1>')
