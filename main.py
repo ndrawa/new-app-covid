@@ -26,34 +26,35 @@ columns = [
 # Initializing the table:
 table = DataTable(source=source, columns=columns, height=500)
 
-# # PLOT
-# def plot_function(tickers):
-#     # Getting some colors:
-#     colors = list(Category20.values())[17]
-#     random_colors = []
-#     for c in range(len(tickers)):
-#         random_colors.append(random.choice(colors))
+# PLOT
+def plot_function(tickers):
+    # Getting some colors:
+    colors = list(Category20.values())[17]
+    random_colors = []
+    for c in range(len(tickers)):
+        random_colors.append(random.choice(colors))
 
-#     # Create the hovertool:
-#     TOOLTIPS = HoverTool(tooltips=[    ('Date', '$x{%Y-%m-%d}'),
-#                    ('AvgPrice', '$@{AveragePrice}'),
-#                    ('Total Volume', '$@{TotalVolume}'),
-#                    ('Total Bags', '$@{TotalBags}')],
-#                          formatters={'$x': 'datetime'})
+    # Create the hovertool:
+    TOOLTIPS = HoverTool(tooltips=[    ('year', '$@{year}'),
+                #    ('AvgPrice', '$@{AveragePrice}'),
+                #    ('Total Volume', '$@{TotalVolume}'),
+                   ('Life Expectancy', '$@{life expectancy}')],
+                         formatters={'$x': 'datetime'})
 
-#     # Create the figure to store all the plot lines in:
-#     p = figure(x_axis_type='datetime', width=1000, height=500)
+    # Create the figure to store all the plot lines in:
+    p = figure(x_axis_type='datetime', width=1000, height=500)
 
-#     # Loop through the tickers and colors and create plot line for each:
-#     for t, rc in zip(tickers, random_colors):
-#         view = CDSView(source=source, filters=[GroupFilter(column_name='region', group=t)])
-#         p.scatter(x='Date', y='AveragePrice', source=source, view=view, line_color=rc, line_width=4)
-#         p.line(x='Date', y='AveragePrice', source=source, view=view, line_color=rc, line_width=4)
+    # Loop through the tickers and colors and create plot line for each:
+    for t, rc in zip(tickers, random_colors):
+        view = CDSView(source=source, filters=[GroupFilter(column_name='country', group=t)])
+        p.scatter(x='year', y='life expectancy', source=source, view=view, line_color=rc, line_width=4)
+        p.line(x='year', y='life expectancy', source=source, view=view, line_color=rc, line_width=4)
 
-#     # Add the hovertool to the figure:
-#     p.add_tools(TOOLTIPS)
-#     return p
-# p = plot_function(status)
+    # Add the hovertool to the figure:
+    p.add_tools(TOOLTIPS)
+    return p
+
+p = plot_function(status)
 
 def text_function(attr, old, new):
     new_text = new
@@ -79,7 +80,7 @@ title = Div(text='<h1 style="text-align: center">Bla blae</h1>')
 widgets_row = Row(type_select)
 layout = layout([[title],
                  [widgets_row],
-                #  [p,table]
+                 [p]
                 ])
 curdoc().title = 'Bla bla'
 curdoc().add_root(layout)
