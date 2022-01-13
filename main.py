@@ -15,7 +15,7 @@ data.sort_values(by='year', ascending=True, inplace=True)
 country = sorted(list(data.country.unique()))
 year = sorted(list(data.year.unique()))
 
-range_slider = RangeSlider(start=year[0], end=year[-1], value=year[:2], step=1, title='Month')
+range_slider = RangeSlider(start=year[0], end=year[-1], value=year[:2], step=1, title='Year')
 select= Select(title="Country", value=country[0], options=country)
 
 df = data[(data['year'] >= range_slider.value[0]) & (data['year'] <= range_slider.value[1]) & data['country']==select.value] 
