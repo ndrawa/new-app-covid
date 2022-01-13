@@ -73,15 +73,26 @@ def filter_function():
 def change_function(attr, old, new):
     filter_function()
 
+def dropdown():
+    from bokeh.io import show
+    from bokeh.models import CustomJS, Dropdown
+
+    menu = [("Developed", "developed"), ("Developing", "developing")]
+
+    dropdown = Dropdown(label="Dropdown button", button_type="warning", menu=menu)
+    dropdown.js_on_event("menu_item_click", CustomJS(code="console.log('dropdown: ' + this.item, this.toString())"))
+
+    show(dropdown)
+
 def tabs(data):
     x = data[data['country']=='Afghanistan']['year']
     y = data[data['country']=='Afghanistan']['life expectancy']
 
-    p1 = figure(width=300, height=300)
+    p1 = figure(width=1000, height=500)
     p1.circle(x, y, size=20, color="navy", alpha=0.5)
     tab1 = Panel(child=p1, title="circle")
 
-    p2 = figure(width=300, height=300)
+    p2 = figure(width=1000, height=500)
     p2.line(x, y, line_width=3, color="navy", alpha=0.5)
     tab2 = Panel(child=p2, title="line")
 
