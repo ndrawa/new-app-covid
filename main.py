@@ -20,7 +20,7 @@ year = sorted(list(data.year.unique()))
 range_slider = RangeSlider(start=year[0], end=year[-1], value=year[:2], step=1, title='Month')
 select= Select(title="Country", value=country[0], options=country)
 
-df = data[(data['year'] == range_slider.value) & data['country']==select.value] 
+df = data[(data['year'] >= range_slider.value[0]) & (data['year'] <= range_slider.value[1]) & data['country']==select.value] 
 source = ColumnDataSource(data=df)
 
 columns = [
@@ -57,10 +57,7 @@ def text_function(attr, old, new):
     text_data = pd.read_json('text_data.json')
 
 def filter_function():
-    # Filter the data according to the widgets:
     new_src = data[(data['country']==select.value)]
-
-    # Replace the data in the current data source with the new data:
     source.data = new_src.to_dict('series')
 
 def change_function(attr, old, new):
