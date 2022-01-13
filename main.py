@@ -7,7 +7,7 @@ from bokeh.layouts import gridplot, layout
 from bokeh.palettes import Category20
 from bokeh.plotting import figure, curdoc
 from bokeh.models import (ColumnDataSource, CDSView , GroupFilter, DataTable,
-                          TableColumn , Row, Div, HoverTool, Select, Panel, Tabs)
+                          TableColumn , Row, Div, HoverTool, Select, Panel, Tabs, RangeSlider)
 from bokeh.io import output_file, show
 
 data = pd.read_csv('data_clean.csv')
@@ -15,9 +15,12 @@ data['country'].unique()
 data.sort_values(by='year', ascending=True, inplace=True)
 
 country = sorted(list(data.country.unique()))
+year = sorted(list(data.year.unique()))
 
-type_select= Select(title="country", value=country[0], options=country)
-df = data[data['country']==type_select.value]
+range_slider = RangeSlider(start=year[0], end=year[-1], value=year[:2], step=1, title='Month')
+select= Select(title="Country", value=country[0], options=country)
+
+df = data[(data['year'] == range_slider.value) & data['country']==select.value] 
 source = ColumnDataSource(data=df)
 
 columns = [
@@ -28,7 +31,6 @@ table = DataTable(source=source, columns=columns, height=500)
 
 
 def plot_function(tickers):
-
     colors = list(Category20.values())[12]
     random_colors = []
     for c in range(len(tickers)):
@@ -46,11 +48,8 @@ def plot_function(tickers):
         view = CDSView(source=source, filters=[GroupFilter(column_name='country', group=t)])
         p.line(x='year', y='life expectancy', source=source, view=view, line_color=rc, line_width=4)
 
-    # Add the hovertool to the figure:
     p.add_tools(TOOLTIPS)
     return p
-
-p = plot_function(country)
 
 def text_function(attr, old, new):
     new_text = new
@@ -59,14 +58,13 @@ def text_function(attr, old, new):
 
 def filter_function():
     # Filter the data according to the widgets:
-    new_src = data[(data['country']==type_select.value)]
+    new_src = data[(data['country']==select.value)]
 
     # Replace the data in the current data source with the new data:
     source.data = new_src.to_dict('series')
 
 def change_function(attr, old, new):
     filter_function()
-
 
 def tabs(data):
     x = data[data['country']=='Afghanistan']['year']
@@ -82,17 +80,17 @@ def tabs(data):
 
     return Tabs(tabs=[tab1, tab2])
 
-type_select.on_change('value', change_function)
+range_slider.on_change('value', change_function)
+select.on_change('value', change_function)
 
-# Header
 title = Div(text='<h1 style="text-align: center">Bla blae</h1>')
 
-# widgets_col = Column(month_slider, year_slider)
-widgets_row = Row(type_select)
+widgets_row = Row(select, range_slider)
 layout = layout([[title],
                  [widgets_row],
-                 [p],
+                 [plot_function(country)],
                 #  [tabs(data)]
                 ])
 curdoc().title = 'Bla bla'
 curdoc().add_root(layout)
+show(layout)
