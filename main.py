@@ -1,12 +1,13 @@
 import pandas as pd
+import numpy as np
 import random
+from datetime import datetime as dt
 from bokeh.io import output_file, show
 from bokeh.layouts import gridplot, layout
 from bokeh.palettes import Category20
 from bokeh.plotting import figure, curdoc
-from bokeh.models import (ColumnDataSource, CDSView, GroupFilter, DataTable,
-                          TableColumn, Column, Row, Div, HoverTool, Select)
-
+from bokeh.models import (ColumnDataSource, CDSView , GroupFilter, DataTable,
+                          TableColumn , Row, Div, HoverTool, Select, Panel, Tabs)
 
 data = pd.read_csv('data_clean.csv')
 data['status'].unique()
@@ -29,7 +30,7 @@ table = DataTable(source=source, columns=columns, height=500)
 # PLOT
 def plot_function(tickers):
     # Getting some colors:
-    colors = list(Category20.values())[17]
+    colors = list(Category20.values())[12]
     random_colors = []
     for c in range(len(tickers)):
         random_colors.append(random.choice(colors))
@@ -71,6 +72,20 @@ def filter_function():
 def change_function(attr, old, new):
     filter_function()
 
+def tabs(data):
+    x = data[data['country']=='Afghanistan']['year']
+    y = data[data['country']=='Afghanistan']['life expectancy']
+
+    p1 = figure(width=300, height=300)
+    p1.circle(x, y, size=20, color="navy", alpha=0.5)
+    tab1 = Panel(child=p1, title="circle")
+
+    p2 = figure(width=300, height=300)
+    p2.line(x, y, line_width=3, color="navy", alpha=0.5)
+    tab2 = Panel(child=p2, title="line")
+
+    return Tabs(tabs=[tab1, tab2])
+
 type_select.on_change('value', change_function)
 
 # Header
@@ -81,6 +96,7 @@ widgets_row = Row(type_select)
 layout = layout([[title],
                  [widgets_row],
                  [p]
+                 [tabs(data)]
                 ])
 curdoc().title = 'Bla bla'
 curdoc().add_root(layout)
