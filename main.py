@@ -57,7 +57,7 @@ def text_function(attr, old, new):
     text_data = pd.read_json('text_data.json')
 
 def filter_function():
-    new_src = data[(data['country']==select.value)]
+    new_src = data[(data['year'] >= range_slider.value[0]) & (data['year'] <= range_slider.value[1]) & (data['country']==select.value)]
     source.data = new_src.to_dict('series')
 
 def change_function(attr, old, new):
