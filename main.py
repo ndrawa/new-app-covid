@@ -64,8 +64,8 @@ def filter_function():
     # Replace the data in the current data source with the new data:
     source.data = new_src.to_dict('series')
 
-# def change_function(attr, old, new):
-#     filter_function()
+def change_function(attr, old, new):
+    filter_function()
 
 
 def tabs(data):
@@ -82,7 +82,7 @@ def tabs(data):
 
     return Tabs(tabs=[tab1, tab2])
 
-type_select.on_change('value', filter_function)
+type_select.on_change('value', change_function)
 
 # Header
 title = Div(text='<h1 style="text-align: center">Bla blae</h1>')
