@@ -56,7 +56,7 @@ def plot_function(tickers):
     p.add_tools(TOOLTIPS)
     return p
 
-p = plot_function(status)
+p = plot_function(country)
 
 def text_function(attr, old, new):
     new_text = new
@@ -65,7 +65,7 @@ def text_function(attr, old, new):
 
 def filter_function():
     # Filter the data according to the widgets:
-    new_src = data[(data['status']==type_select.value)]
+    new_src = data[(data['country']==type_select.value)]
 
     # Replace the data in the current data source with the new data:
     source.data = new_src.to_dict('series')
