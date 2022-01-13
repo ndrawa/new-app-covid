@@ -1,7 +1,5 @@
 import pandas as pd
-import numpy as np
 import random
-from datetime import datetime as dt
 from bokeh.io import output_file, show
 from bokeh.layouts import gridplot, layout
 from bokeh.palettes import Category20
@@ -63,31 +61,17 @@ def filter_function():
 def change_function(attr, old, new):
     filter_function()
 
-def tabs(data):
-    x = data[data['country']=='Afghanistan']['year']
-    y = data[data['country']=='Afghanistan']['life expectancy']
-
-    p1 = figure(width=1000, height=500)
-    p1.circle(x, y, size=20, color="navy", alpha=0.5)
-    tab1 = Panel(child=p1, title="circle")
-
-    p2 = figure(width=1000, height=500)
-    p2.line(x, y, line_width=3, color="navy", alpha=0.5)
-    tab2 = Panel(child=p2, title="line")
-
-    return Tabs(tabs=[tab1, tab2])
 
 range_slider.on_change('value', change_function)
 select.on_change('value', change_function)
 
-title = Div(text='<h1 style="text-align: center">Bla blae boom</h1>')
 
 widgets_row = Row(select, range_slider)
-layout = layout([[title],
+layout = layout([[Div(text='<h1 style="text-align: center">Bla blae bom</h1>')],
                  [widgets_row],
                  [plot_function(country)],
-                #  [tabs(data)]
                 ])
+
 curdoc().title = 'Bla bla bla'
 curdoc().add_root(layout)
 show(layout)
