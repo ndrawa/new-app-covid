@@ -80,7 +80,7 @@ def tabs(data):
 range_slider.on_change('value', change_function)
 select.on_change('value', change_function)
 
-title = Div(text='<h1 style="text-align: center">Bla blae</h1>')
+title = Div(text='<h1 style="text-align: center">Bla blae boom</h1>')
 
 widgets_row = Row(select, range_slider)
 layout = layout([[title],
@@ -88,6 +88,6 @@ layout = layout([[title],
                  [plot_function(country)],
                 #  [tabs(data)]
                 ])
-curdoc().title = 'Bla bla'
+curdoc().title = 'Bla bla bla'
 curdoc().add_root(layout)
 show(layout)
