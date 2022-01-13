@@ -37,10 +37,10 @@ def plot_function(tickers):
         random_colors.append(random.choice(colors))
 
     # Create the hovertool:
-    TOOLTIPS = HoverTool(tooltips=[    ('year', '$@{year}'),
-                   ('country', '$@{country}'),
-                #    ('Total Volume', '$@{TotalVolume}'),
-                   ('Life Expectancy', '$@{life expectancy}')])
+    TOOLTIPS = HoverTool(tooltips=[    ('Year', '$@{year}'),
+                   ('Life Expectancy', '$@{life expectancy}'),
+                   ('Country', '$@{country}')
+                   ])
 
     # Create the figure to store all the plot lines in:
     p = figure(x_axis_type='datetime', width=1000, height=500)
@@ -48,7 +48,6 @@ def plot_function(tickers):
     # Loop through the tickers and colors and create plot line for each:
     for t, rc in zip(tickers, random_colors):
         view = CDSView(source=source, filters=[GroupFilter(column_name='country', group=t)])
-        p.scatter(x='year', y='life expectancy', source=source, view=view, line_color=rc, line_width=4)
         p.line(x='year', y='life expectancy', source=source, view=view, line_color=rc, line_width=4)
 
     # Add the hovertool to the figure:
@@ -97,7 +96,7 @@ widgets_row = Row(type_select)
 layout = layout([[title],
                  [widgets_row],
                  [p],
-                 [tabs(data)]
+                #  [tabs(data)]
                 ])
 curdoc().title = 'Bla bla'
 curdoc().add_root(layout)
