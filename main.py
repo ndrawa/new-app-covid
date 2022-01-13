@@ -8,6 +8,7 @@ from bokeh.palettes import Category20
 from bokeh.plotting import figure, curdoc
 from bokeh.models import (ColumnDataSource, CDSView , GroupFilter, DataTable,
                           TableColumn , Row, Div, HoverTool, Select, Panel, Tabs)
+from bokeh.io import output_file, show
 
 data = pd.read_csv('data_clean.csv')
 data['status'].unique()
@@ -95,7 +96,7 @@ title = Div(text='<h1 style="text-align: center">Bla blae</h1>')
 widgets_row = Row(type_select)
 layout = layout([[title],
                  [widgets_row],
-                 [p]
+                 [p],
                  [tabs(data)]
                 ])
 curdoc().title = 'Bla bla'
