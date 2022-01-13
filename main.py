@@ -11,19 +11,19 @@ from bokeh.models import (ColumnDataSource, CDSView , GroupFilter, DataTable,
 from bokeh.io import output_file, show
 
 data = pd.read_csv('data_clean.csv')
-data['status'].unique()
+data['country'].unique()
 data.sort_values(by='year', ascending=True, inplace=True)
 
-status = sorted(list(data.status.unique()))
+country = sorted(list(data.country.unique()))
 
-type_select= Select(title="Status", value=status[0], options=status)
-df = data[data['status']==type_select.value]
+type_select= Select(title="country", value=country[0], options=country)
+df = data[data['country']==type_select.value]
 source = ColumnDataSource(data=df)
 
 # TABLE
 # Creating the list of columns:
 columns = [
-        TableColumn(field="status", title="Status")
+        TableColumn(field="country", title="Country")
     ]
 # Initializing the table:
 table = DataTable(source=source, columns=columns, height=500)
@@ -38,7 +38,7 @@ def plot_function(tickers):
 
     # Create the hovertool:
     TOOLTIPS = HoverTool(tooltips=[    ('year', '$@{year}'),
-                #    ('AvgPrice', '$@{AveragePrice}'),
+                   ('country', '$@{country}'),
                 #    ('Total Volume', '$@{TotalVolume}'),
                    ('Life Expectancy', '$@{life expectancy}')],
                          formatters={'$x': 'datetime'})
